@@ -24,7 +24,7 @@ cat $1 | awk -v outputFile=$2 -v errorFile=$3 -v numFields=4 ' BEGIN {
         stdout = stdout "    <field name = \"created_at\" >" $1 "</field>\n";
         stdout = stdout "    <field name = \"id\" >" $2 "</field>\n";
         stdout = stdout "    <field name = \"user_id\" >" $3 "</field>\n";
-        stdout = stdout "    <field name = \"status\" >" $4 "</field>\n";
+        stdout = stdout "    <field name = \"status\" ><![CDATA["$4"]]></field>\n";
         stdout = stdout "  </doc>\n";
     }
     else {

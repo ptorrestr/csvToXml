@@ -44,6 +44,6 @@ done
 
 
 # Delete temporal dir.
-rm -r $tempdir
+#rm -r $tempdir
 
 exit 0
