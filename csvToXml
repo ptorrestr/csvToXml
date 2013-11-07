@@ -13,25 +13,31 @@
 cat $1 | awk -v outputFile=$2 -v errorFile=$3 -v numFields=4 ' BEGIN {
     FS = "[\t]"
     i = 0;
-    stdout = "";
+    stdout = "<add>\n";
     stderr = "";
+    error = 0;
 }
 {
     if (NF == numFields) 
     {
-        stdout = stdout "<doc>\n";
-        stdout = stdout "\t<field name = \"created_at\" >" $1 "</field>\n";
-        stdout = stdout "\t<field name = \"id\" >" $2 "</field>\n";
-        stdout = stdout "\t<field name = \"user_id\" >" $3 "</field>\n";
-        stdout = stdout "\t<field name = \"status\" >" $4 "</field>\n";
-        stdout = stdout "</doc>\n"
+        stdout = stdout "  <doc>\n";
+        stdout = stdout "    <field name = \"created_at\" >" $1 "</field>\n";
+        stdout = stdout "    <field name = \"id\" >" $2 "</field>\n";
+        stdout = stdout "    <field name = \"user_id\" >" $3 "</field>\n";
+        stdout = stdout "    <field name = \"status\" >" $4 "</field>\n";
+        stdout = stdout "  </doc>\n";
     }
     else {
+        error = 1;
         stderr = stderr $0 "\n";
     }
 }
 END {
+    stdout  = stdout "</add>"
     print stdout > outputFile;
-    print stderr > errorFile;
+    if ( error == 1) 
+    {
+        print stderr > errorFile;
+    }
 }
 '

@@ -1,0 +1,49 @@
+#!/bin/bash 
+
+# $1 input folder
+# $2 output folder
+# $3 error folder (if any)
+
+if [ "$#" -ne 3 ]; then
+    echo -e "Wrong number of parameters"
+    echo -e "Usage: bulkCsvToXml inputdir outputdir errordir"
+    exit 1
+fi
+
+inputdir=$1
+outputdir=$2
+errordir=$3
+fileSuffix="add_doc.xml"
+errorSuffix="parsing.err"
+
+# if no inputdir, stop
+if [ ! -d $inputdir ]
+then
+    echo -e "No input dir found: '$inputdir'. Please check path"
+    exit 2
+fi
+
+if [ ! -d $outputdir ]
+then
+	mkdir $outputdir
+fi
+if [ ! -d $errordir ]
+then
+	mkdir $errordir
+fi
+
+# get sub dirs
+files=`ls $inputdir`
+# for all files
+for file in $files
+do
+	echo -e "Processing File : $inputdir/$file -> $outputdir/$file.$fileSuffix"
+    # Parse
+    sh csvToXml $inputdir/$file $outputdir/$file.$fileSuffix $errordir/$file.$errorSuffix
+    # Check file creation
+    if [ ! -f $outputdir/$file.$fileSuffix ]
+    then
+        echo "Error: file '$outputdir/$file.$fileSuffix' not created"
+    fi
+done
+exit 0

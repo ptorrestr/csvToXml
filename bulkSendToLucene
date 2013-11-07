@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# $1 : Input folder
+# $2 : Error folder
+# $3 : Lucene URL
+
+# Check parameter number
+if [ "$#" -ne 3 ]; then
+    echo -e "Wrong number of parameters"
+    echo -e "Usage: bulkSendToLucen inputdir errordir luceneURL"
+    exit 1
+fi
+
+inputdir=$1
+tempdir="outputtmp"
+errordir=$2
+errorPrefix="curl.err"
+luceneURL=$3
+
+if [ ! -d $errordir ]
+then
+    mkdir -p $errordir
+fi
+
+# Execute bulkCsvToXml
+sh bulkCsvToXml $inputdir $tempdir $errordir
+
+# Check $tempdir folder
+if [ ! -d $tempdir ]
+then
+    echo -e "Tempdir could not be created. Check errors"
+    exit 2
+fi
+
+# For each file in $tempdir, send to Lucene
+files=`ls $tempdir`
+for file in $files
+do
+    sh postLucene $tempdir/$file $luceneURL $errordir/$file.$errorPrefix
+done
+
+
+# Delete temporal dir.
+rm -r $tempdir
+
+exit 0
