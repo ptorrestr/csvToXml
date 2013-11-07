@@ -4,6 +4,9 @@
 # $2 output folder
 # $3 error folder (if any)
 
+#my basedir
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 if [ "$#" -ne 3 ]; then
     echo -e "Wrong number of parameters"
     echo -e "Usage: bulkCsvToXml inputdir outputdir errordir"
@@ -39,7 +42,7 @@ for file in $files
 do
 	echo -e "Processing File : $inputdir/$file -> $outputdir/$file.$fileSuffix"
     # Parse
-    sh csvToXml $inputdir/$file $outputdir/$file.$fileSuffix $errordir/$file.$errorSuffix
+    sh $basedir/csvToXml $inputdir/$file $outputdir/$file.$fileSuffix $errordir/$file.$errorSuffix
     # Check file creation
     if [ ! -f $outputdir/$file.$fileSuffix ]
     then

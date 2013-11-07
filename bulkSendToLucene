@@ -4,6 +4,9 @@
 # $2 : Error folder
 # $3 : Lucene URL
 
+#My base dir
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # Check parameter number
 if [ "$#" -ne 3 ]; then
     echo -e "Wrong number of parameters"
@@ -23,7 +26,7 @@ then
 fi
 
 # Execute bulkCsvToXml
-sh bulkCsvToXml $inputdir $tempdir $errordir
+sh $basedir/bulkCsvToXml $inputdir $tempdir $errordir
 
 # Check $tempdir folder
 if [ ! -d $tempdir ]
@@ -36,7 +39,7 @@ fi
 files=`ls $tempdir`
 for file in $files
 do
-    sh postLucene $tempdir/$file $luceneURL $errordir/$file.$errorPrefix
+    sh $basedir/postLucene $tempdir/$file $luceneURL $errordir/$file.$errorPrefix
 done
 
 
