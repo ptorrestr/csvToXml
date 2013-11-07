@@ -5,11 +5,13 @@
 # $3 error folder (if any)
 
 #my basedir
+echo "${BASH_SOURCE[0]}"
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo $basedir
 
 if [ "$#" -ne 3 ]; then
-    echo -e "Wrong number of parameters"
-    echo -e "Usage: bulkCsvToXml inputdir outputdir errordir"
+    echo "Wrong number of parameters"
+    echo "Usage: bulkCsvToXml inputdir outputdir errordir"
     exit 1
 fi
 
@@ -22,7 +24,7 @@ errorSuffix="parsing.err"
 # if no inputdir, stop
 if [ ! -d $inputdir ]
 then
-    echo -e "No input dir found: '$inputdir'. Please check path"
+    echo "No input dir found: '$inputdir'. Please check path"
     exit 2
 fi
 
@@ -40,9 +42,9 @@ files=`ls $inputdir`
 # for all files
 for file in $files
 do
-	echo -e "Processing File : $inputdir/$file -> $outputdir/$file.$fileSuffix"
+	echo "Processing File : $inputdir/$file -> $outputdir/$file.$fileSuffix"
     # Parse
-    sh $basedir/csvToXml $inputdir/$file $outputdir/$file.$fileSuffix $errordir/$file.$errorSuffix
+    $basedir/csvToXml $inputdir/$file $outputdir/$file.$fileSuffix $errordir/$file.$errorSuffix
     # Check file creation
     if [ ! -f $outputdir/$file.$fileSuffix ]
     then

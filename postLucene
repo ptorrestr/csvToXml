@@ -20,8 +20,8 @@
 
 # Check parameter number
 if [ "$#" -ne 3 ]; then
-    echo -e "Wrong number of parameters"
-    echo -e "Usage: send file luceneURL error"
+    echo "Wrong number of parameters"
+    echo "Usage: send file luceneURL error"
     exit 1
 fi
 
@@ -32,11 +32,11 @@ log=$3
 # Check file
 if [ ! -f $file ]
 then
-    echo -e "File '$file' cannot be found"
+    echo "File '$file' cannot be found"
     exit 2
 fi
 
-echo -e "Posting file $file to $url"
+echo "Posting file $file to $url"
 curl $url --data-binary @$file -H 'Content-type:application/xml' -o $log
 
 #send the commit command to make sure all the changes are flushed and visible

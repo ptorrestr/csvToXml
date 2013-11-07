@@ -9,8 +9,8 @@ basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Check parameter number
 if [ "$#" -ne 3 ]; then
-    echo -e "Wrong number of parameters"
-    echo -e "Usage: bulkSendToLucen inputdir errordir luceneURL"
+    echo "Wrong number of parameters"
+    echo "Usage: bulkSendToLucen inputdir errordir luceneURL"
     exit 1
 fi
 
@@ -26,12 +26,12 @@ then
 fi
 
 # Execute bulkCsvToXml
-sh $basedir/bulkCsvToXml $inputdir $tempdir $errordir
+$basedir/bulkCsvToXml $inputdir $tempdir $errordir
 
 # Check $tempdir folder
 if [ ! -d $tempdir ]
 then
-    echo -e "Tempdir could not be created. Check errors"
+    echo "Tempdir could not be created. Check errors"
     exit 2
 fi
 
@@ -39,7 +39,7 @@ fi
 files=`ls $tempdir`
 for file in $files
 do
-    sh $basedir/postLucene $tempdir/$file $luceneURL $errordir/$file.$errorPrefix
+    $basedir/postLucene $tempdir/$file $luceneURL $errordir/$file.$errorPrefix
 done
 
 
